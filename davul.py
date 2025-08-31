@@ -1,4 +1,7 @@
 import streamlit as st
+st.write("--- DEBUG: Secrets Kontrolü ---")
+st.write(st.secrets.to_dict())
+st.write("--- DEBUG SONU ---")
 from datetime import datetime, time, timedelta, date
 from typing import List, Dict, Any
 import json
