@@ -1,3 +1,2 @@
 streamlit
 python-dateutil
-google-cloud-firestore
