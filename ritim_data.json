@@ -1,0 +1,531 @@
+{
+    "students": [
+        {
+            "id": 1,
+            "name": "Toprak Ege",
+            "parent_name": "Tolga",
+            "parent_phone": "533 555-5555",
+            "dob": "2012-09-09",
+            "payment_day": 4,
+            "next_payment_due_date": "2025-09-04",
+            "last_payment_date": "2025-08-28",
+            "payment_history": [
+                "2025-08-28"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Öğrenci 2",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 3,
+            "name": "Öğrenci 3",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 4,
+            "name": "Öğrenci 4",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 5,
+            "name": "Öğrenci 5",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": "2025-09-01",
+            "last_payment_date": "2025-08-28",
+            "payment_history": [
+                "2025-08-28"
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Öğrenci 6",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 7,
+            "name": "Öğrenci 7",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 8,
+            "name": "Öğrenci 8",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 9,
+            "name": "Öğrenci 9",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 10,
+            "name": "Öğrenci 10",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 11,
+            "name": "Öğrenci 11",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 12,
+            "name": "Öğrenci 12",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 13,
+            "name": "Öğrenci 13",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 14,
+            "name": "Öğrenci 14",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 15,
+            "name": "Öğrenci 15",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 16,
+            "name": "Öğrenci 16",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 17,
+            "name": "Öğrenci 17",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 18,
+            "name": "Öğrenci 18",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 19,
+            "name": "Öğrenci 19",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 20,
+            "name": "Öğrenci 20",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 21,
+            "name": "Öğrenci 21",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 22,
+            "name": "Öğrenci 22",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 23,
+            "name": "Öğrenci 23",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 24,
+            "name": "Öğrenci 24",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 25,
+            "name": "Öğrenci 25",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 26,
+            "name": "Öğrenci 26",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 27,
+            "name": "Öğrenci 27",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 28,
+            "name": "Öğrenci 28",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 29,
+            "name": "Öğrenci 29",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 30,
+            "name": "Öğrenci 30",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 31,
+            "name": "Öğrenci 31",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 32,
+            "name": "Öğrenci 32",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 33,
+            "name": "Öğrenci 33",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 34,
+            "name": "Öğrenci 34",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 35,
+            "name": "Öğrenci 35",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 36,
+            "name": "Öğrenci 36",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 37,
+            "name": "Öğrenci 37",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 38,
+            "name": "Öğrenci 38",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 39,
+            "name": "Öğrenci 39",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        },
+        {
+            "id": 40,
+            "name": "Öğrenci 40",
+            "parent_name": "",
+            "parent_phone": "",
+            "dob": null,
+            "payment_day": 1,
+            "next_payment_due_date": null,
+            "last_payment_date": null,
+            "payment_history": []
+        }
+    ],
+    "schedule": {
+        "Pazartesi": [
+            {
+                "student": "Toprak Ege",
+                "start": "10:30:00",
+                "end": "11:30:00",
+                "status": "Yapılmadı-Öğrenci"
+            },
+            {
+                "student": "Öğrenci 7",
+                "start": "13:30:00",
+                "end": "14:30:00",
+                "status": "Yapıldı"
+            }
+        ],
+        "Salı": [
+            {
+                "student": "Öğrenci 34",
+                "start": "11:30:00",
+                "end": "12:00:00",
+                "status": "Yapıldı"
+            },
+            {
+                "student": "Öğrenci 14",
+                "start": "13:30:00",
+                "end": "14:30:00",
+                "status": "Yapılmadı-Eğitmen"
+            },
+            {
+                "student": "Öğrenci 27",
+                "start": "15:30:00",
+                "end": "16:30:00",
+                "status": "Planlandı"
+            },
+            {
+                "student": "Öğrenci 7",
+                "start": "17:30:00",
+                "end": "18:30:00",
+                "status": "Planlandı"
+            }
+        ],
+        "Çarşamba": [
+            {
+                "student": "Toprak Ege",
+                "start": "12:00:00",
+                "end": "13:00:00",
+                "status": "Yapıldı"
+            },
+            {
+                "student": "Öğrenci 2",
+                "start": "13:00:00",
+                "end": "14:00:00",
+                "status": "Yapılmadı-Eğitmen"
+            }
+        ],
+        "Perşembe": [
+            {
+                "student": "Öğrenci 18",
+                "start": "14:30:00",
+                "end": "16:30:00",
+                "status": "Planlandı"
+            }
+        ],
+        "Cuma": [
+            {
+                "student": "Öğrenci 21",
+                "start": "15:00:00",
+                "end": "16:00:00",
+                "status": "Planlandı"
+            },
+            {
+                "student": "Öğrenci 24",
+                "start": "16:00:00",
+                "end": "17:00:00",
+                "status": "Planlandı"
+            }
+        ],
+        "Cumartesi": []
+    },
+    "working_hours": [
+        "10:00:00",
+        "20:00:00"
+    ]
+}
