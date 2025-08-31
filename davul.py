@@ -1,63 +1,31 @@
 import streamlit as st
-st.write("--- DEBUG: Secrets Kontrolü ---")
-st.write(st.secrets.to_dict())
-st.write("--- DEBUG SONU ---")
 from datetime import datetime, time, timedelta, date
 from typing import List, Dict, Any
 import json
 import os
 from dateutil.relativedelta import relativedelta
-import google.oauth2.service_account
-from google.cloud import firestore
 
 st.set_page_config(page_title="Haftalık Ders Planı", layout="wide")
 
-# ---------- Sabitler ve Bağlantı ----------
+# ---------- Sabitler ----------
 DAYS = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"]
 TIME_SLOTS: List[time] = [time(h, m) for h in range(8, 22) for m in (0, 30)]
 if time(22, 0) not in TIME_SLOTS:
     TIME_SLOTS.append(time(22, 0))
+DATA_FILE = "ritim_data.json"
 LOGO_FILE = "drumschool.jpeg"
 
-# Firebase bağlantısı
-# Bu kod Streamlit Cloud'da çalışırken Secrets'ı kullanır.
-# Lokalde çalışırken "firebase_key.json" dosyasını arar.
-try:
-    if "FIREBASE_KEY_JSON_STRING" in st.secrets:
-        key_json_string = st.secrets["FIREBASE_KEY_JSON_STRING"]
-        key_dict = json.loads(key_json_string)
-    elif os.path.exists("firebase_key.json"):
-        key_dict = json.load(open("firebase_key.json"))
-    else:
-        raise FileNotFoundError("Firebase anahtar dosyası bulunamadı.")
-        
-    creds = google.oauth2.service_account.Credentials.from_service_account_info(key_dict)
-    db = firestore.Client(credentials=creds)
-    # Veritabanında verileri saklayacağımız referans
-    doc_ref = db.collection("ritim_planlayici_data").document("app_state")
-except Exception as e:
-    st.error(f"Firebase bağlantısı kurulamadı. Lütfen Streamlit Secrets ayarlarını veya firebase_key.json dosyasını kontrol et.")
-    st.exception(e)
-    st.stop()
-
-
-# ---------- State (Firebase Veri Yönetimi) ----------
+# ---------- State (JSON Dosyası ile Veri Yönetimi) ----------
 def save_state():
-    """Uygulama durumunu Firebase'e kaydeder."""
     data_to_save = st.session_state.app.copy()
-    # Tarih ve zaman objelerini string'e çevir (JSON ve Firebase uyumluluğu için)
-    # Schedule
     schedule_str = {day: [] for day in DAYS}
     for day, lessons in data_to_save.get("schedule", {}).items():
         for lesson in lessons:
             lesson_copy = lesson.copy()
-            for key in ["start", "end"]:
-                if lesson_copy.get(key) and isinstance(lesson_copy[key], time):
-                    lesson_copy[key] = lesson_copy[key].isoformat()
+            lesson_copy["start"] = lesson["start"].strftime('%H:%M:%S')
+            lesson_copy["end"] = lesson["end"].strftime('%H:%M:%S')
             schedule_str[day].append(lesson_copy)
     data_to_save["schedule"] = schedule_str
-    
-    # Students
     students_str = []
     for student in data_to_save.get("students", []):
         student_copy = student.copy()
@@ -65,41 +33,48 @@ def save_state():
              if student_copy.get(key) and isinstance(student_copy[key], date):
                 student_copy[key] = student_copy[key].isoformat()
         if "payment_history" in student_copy:
-            student_copy["payment_history"] = [d.isoformat() for d in student_copy.get("payment_history", [])]
+            student_copy["payment_history"] = [d.isoformat() for d in student_copy["payment_history"]]
         students_str.append(student_copy)
     data_to_save["students"] = students_str
-    
-    # Working Hours
-    data_to_save["working_hours"] = [t.isoformat() for t in data_to_save.get("working_hours", [])]
-    
-    # Firebase'e yaz
-    doc_ref.set(data_to_save)
+    data_to_save["working_hours"] = [t.strftime('%H:%M:%S') for t in data_to_save["working_hours"]]
+    with open(DATA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data_to_save, f, ensure_ascii=False, indent=4)
 
 def load_state():
-    """Uygulama durumunu Firebase'den yükler."""
-    doc = doc_ref.get()
-    if doc.exists:
-        data = doc.to_dict()
-        # String'leri tarih ve zaman objelerine geri çevir
-        for day, lessons in data.get("schedule", {}).items():
-            for lesson in lessons:
-                lesson["start"] = time.fromisoformat(lesson["start"])
-                lesson["end"] = time.fromisoformat(lesson["end"])
-        for student in data.get("students", []):
-            for key in ["dob", "next_payment_due_date", "last_payment_date"]:
-                if student.get(key):
-                    try: student[key] = date.fromisoformat(student[key])
-                    except (ValueError, TypeError): student[key] = None
-            if "payment_history" in student:
-                student["payment_history"] = sorted([date.fromisoformat(d) for d in student["payment_history"]], reverse=True)
-        data["working_hours"] = tuple(time.fromisoformat(t) for t in data["working_hours"])
-        return data
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            if data.get("students"):
+                migrated_students = []
+                for i, student_data in enumerate(data["students"]):
+                    if isinstance(student_data, str): 
+                        migrated_students.append({"id": i + 1, "name": student_data, "parent_name": "", "parent_phone": "", "dob": None, "payment_day": 1, "next_payment_due_date": None, "last_payment_date": None, "payment_history": []})
+                    else:
+                        student_data.pop("credits", None)
+                        if "payment_day" not in student_data: student_data["payment_day"] = 1
+                        if "next_payment_due_date" not in student_data: student_data["next_payment_due_date"] = None
+                        if "last_payment_date" not in student_data: student_data["last_payment_date"] = None
+                        if "payment_history" not in student_data: student_data["payment_history"] = []
+                        migrated_students.append(student_data)
+                data["students"] = migrated_students
             
-    # Firebase'de veri yoksa, başlangıç verisini oluştur ve yükle
-    initial_data = {"students": [{"id": i, "name": f"Öğrenci {i}", "parent_name": "", "parent_phone": "", "dob": None, "payment_day": 1, "next_payment_due_date": None, "last_payment_date": None, "payment_history": []} for i in range(1, 41)],"schedule": {day: [] for day in DAYS},"working_hours": (time(8, 0), time(22, 0))}
-    st.session_state.app = initial_data
-    save_state() # İlk veriyi Firebase'e kaydet
-    return initial_data
+            for day, lessons in data.get("schedule", {}).items():
+                for lesson in lessons:
+                    lesson["start"] = datetime.strptime(lesson["start"], '%H:%M:%S').time()
+                    lesson["end"] = datetime.strptime(lesson["end"], '%H:%M:%S').time()
+            
+            for student in data.get("students", []):
+                for key in ["dob", "next_payment_due_date", "last_payment_date"]:
+                    if student.get(key):
+                        try: student[key] = datetime.fromisoformat(student[key]).date()
+                        except (ValueError, TypeError): student[key] = None
+                if "payment_history" in student:
+                    student["payment_history"] = sorted([datetime.fromisoformat(d).date() for d in student["payment_history"]], reverse=True)
+
+            data["working_hours"] = tuple(datetime.strptime(t, '%H:%M:%S').time() for t in data["working_hours"])
+            return data
+            
+    return {"students": [{"id": i, "name": f"Öğrenci {i}", "parent_name": "", "parent_phone": "", "dob": None, "payment_day": 1, "next_payment_due_date": None, "last_payment_date": None, "payment_history": []} for i in range(1, 41)],"schedule": {day: [] for day in DAYS},"working_hours": (time(8, 0), time(22, 0))}
 
 def init_state():
     if "app" not in st.session_state:
@@ -108,6 +83,7 @@ def init_state():
         st.session_state.selected_lesson = None
 init_state()
 
+# (Kalan tüm kodlar, yardımcı fonksiyonlar, sidebar, tablo render vb. öncekiyle aynıdır ve buraya tam haliyle eklenmiştir.)
 # ---------- Helpers ----------
 def to_dt(t: time) -> datetime: return datetime.combine(date.today(), t)
 def hhmm(t: time) -> str: return t.strftime("%H:%M")
@@ -148,7 +124,6 @@ def update_status_and_close(day, index, new_status):
     st.session_state.app["schedule"][day][index]["status"] = new_status
     save_state()
     st.session_state.selected_lesson = None
-
 def delete_payment(student_index, payment_to_delete):
     student = st.session_state.app["students"][student_index]
     history = student["payment_history"]
@@ -188,7 +163,6 @@ with st.sidebar:
             if student_to_add and add_lesson(day, start_t, dur_minutes, student_to_add['name']):
                 st.success(f"Eklendi: {day} {start_str} - {student_to_add['name']}")
                 st.rerun()
-
     with st.expander("👥 Öğrenci Yönetimi"):
         st.write("Öğrenci Bilgilerini Düzenle")
         all_students = st.session_state.app["students"]
@@ -211,14 +185,10 @@ with st.sidebar:
                     parent_phone = st.text_input("Veli Telefonu", value=selected_student_manage.get('parent_phone', ''))
                     dob = st.date_input("Doğum Tarihi", value=selected_student_manage.get('dob'), min_value=datetime(1950,1,1).date(), max_value=date.today())
                     if st.form_submit_button("Bilgileri Kaydet", use_container_width=True):
-                        all_students[student_index]['name'] = new_name
-                        all_students[student_index]['parent_name'] = parent_name
-                        all_students[student_index]['parent_phone'] = parent_phone
-                        all_students[student_index]['dob'] = dob
+                        all_students[student_index]['name'] = new_name; all_students[student_index]['parent_name'] = parent_name; all_students[student_index]['parent_phone'] = parent_phone; all_students[student_index]['dob'] = dob
                         save_state()
                         st.success(f"{new_name} bilgileri güncellendi.")
                         st.rerun()
-
     with st.expander("💰 Ödeme Yönetimi"):
         st.write("Aylık Ödeme Takibi")
         all_students = st.session_state.app["students"]
@@ -226,17 +196,13 @@ with st.sidebar:
         if student_for_payment:
             student_index = next((i for i, s in enumerate(all_students) if s['id'] == student_for_payment['id']), None)
             due_date = student_for_payment.get("next_payment_due_date")
-            st.markdown("##### Güncel Durum")
+            st.markdown("##### Güncel Durum"); 
             if due_date and date.today() > due_date:
-                overdue_days = (date.today() - due_date).days
-                st.error(f"{overdue_days} GÜN GECİKMEDE")
-            elif due_date:
-                st.success(f"ÖDENDİ")
-            else:
-                st.warning("İlk ödeme bekleniyor.")
+                st.error(f"{(date.today() - due_date).days} GÜN GECİKMEDE")
+            elif due_date: st.success(f"ÖDENDİ")
+            else: st.warning("İlk ödeme bekleniyor.")
             st.info(f"Sonraki Ödeme Tarihi: **{due_date.strftime('%d %B %Y') if due_date else 'Belirsiz'}**")
-            st.markdown("---")
-            st.markdown("##### Ödeme Kaydı")
+            st.markdown("---"); st.markdown("##### Ödeme Kaydı")
             if st.button("Ödeme Alındı", use_container_width=True, type="primary"):
                 payment_date = date.today()
                 payment_day = all_students[student_index].get("payment_day", 1)
@@ -268,19 +234,15 @@ with st.sidebar:
                         save_state()
                         st.success(f"Geçmiş ödeme {past_payment_date.strftime('%d %b')} tarihinde kaydedildi.")
                         st.rerun()
-                    else:
-                        st.warning("Bu tarihte zaten bir ödeme kaydı var.")
-            st.markdown("---")
-            st.markdown("##### Ödeme Geçmişi")
+                    else: st.warning("Bu tarihte zaten bir ödeme kaydı var.")
+            st.markdown("---"); st.markdown("##### Ödeme Geçmişi")
             history = student_for_payment.get("payment_history", [])
-            if not history:
-                st.write("Kayıtlı ödeme yok.")
+            if not history: st.write("Kayıtlı ödeme yok.")
             else:
                 for p_date in history:
                     col1, col2 = st.columns([3, 1])
                     col1.text(p_date.strftime('%d %B %Y, %A'))
                     col2.button("Sil", key=f"del_{student_for_payment['id']}_{p_date.isoformat()}", on_click=delete_payment, args=(student_index, p_date), use_container_width=True)
-
     with st.expander("⚙️ Mesai Saatleri"):
         current_wh_start, current_wh_end = st.session_state.app["working_hours"]
         time_str_list = [t.strftime('%H:%M') for t in TIME_SLOTS]
@@ -297,7 +259,6 @@ with st.sidebar:
                 st.session_state.app["working_hours"] = (whs, whe)
                 save_state()
                 st.rerun()
-    
     st.divider()
     if os.path.exists(LOGO_FILE):
         st.image(LOGO_FILE, use_container_width=True)
